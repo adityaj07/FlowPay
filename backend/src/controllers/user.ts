@@ -131,3 +131,40 @@ export const updateUser = async (req: Request, res: Response) => {
     message: "Updated Successfully",
   });
 };
+
+export const bulk = async (req: Request, res: Response) => {
+  const filter = req.query.filter || "";
+
+  try {
+    const users = await User.find({
+      $or: [
+        {
+          firstName: {
+            $regex: filter,
+          },
+        },
+        {
+          lastName: {
+            $regex: filter,
+          },
+        },
+      ],
+    });
+
+    const mappedUsers = users.map((user) => ({
+      username: user.username,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      _id: user._id,
+    }));
+
+    res.status(statusCode.success).json({
+      users: mappedUsers,
+    });
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    res.status(statusCode.internalError).json({
+      message: "Internal server error",
+    });
+  }
+};
