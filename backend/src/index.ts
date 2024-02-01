@@ -1,0 +1,21 @@
+import express, { Request, Response } from "express";
+import env from "./utils/validateEnv"
+import cors from "cors"
+const app = express();
+import rootRouter from "./routes"
+
+
+app.use(cors())
+app.use(express.json())
+
+app.use("/api/v1", rootRouter)
+
+app.get("/", (req: Request, res: Response) => {
+    res.send("Jai Shri Ram ji")
+})
+
+
+app.listen(env.PORT, () => {
+    console.log("Server running at port: ", env.PORT)
+})
+
