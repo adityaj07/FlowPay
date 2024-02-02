@@ -12,7 +12,7 @@ export async function connectDB(){
         const connection = mongoose.connection;
 
         connection.on("connected",()=>{
-            console.log("Mongodb connected succesfully", env.MONGO_URL);
+            console.log("Mongodb connected succesfully");
         });
 
         connection.on("error",(err)=>{

@@ -13,111 +13,124 @@ config();
 connectDB();
 
 export const signup = async (req: Request, res: Response) => {
-  const { username, firstName, lastName, password } = req.body;
+  try {
+    const { username, firstName, lastName, password } = req.body;
 
-  //zod input validation
-  const { success } = signupBody.safeParse(req.body);
-  if (!success) {
-    return res.status(statusCode.notAccepted).json({
-      message: "Incorrect inputs",
+    //zod input validation
+    const { success } = signupBody.safeParse(req.body);
+    if (!success) {
+      return res.status(statusCode.notAccepted).json({
+        message: "Incorrect inputs",
+      });
+    }
+
+    //checking for existing user
+    const existingUser = await User.findOne({
+      username,
     });
-  }
+    if (existingUser) {
+      return res.status(statusCode.notAccepted).json({
+        message: `User with email ${username} already exists!`,
+      });
+    }
 
-  //checking for existing user
-  const existingUser = await User.findOne({
-    username,
-  });
-  if (existingUser) {
-    return res.status(statusCode.notAccepted).json({
-      message: `User with email ${username} already exists!`,
+    //hahsing the password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    //creating a new user
+    const newUser = await User.create({
+      username,
+      firstName,
+      lastName,
+      password: hashedPassword,
     });
-  }
 
-  //hahsing the password
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(password, salt);
+    const userId = newUser._id;
 
-  //creating a new user
-  const newUser = await User.create({
-    username,
-    firstName,
-    lastName,
-    password: hashedPassword,
-  });
-
-  const userId = newUser._id;
-
-  //creating an account for the user and giving them random amount of balance to start with
-  const newAccount = await Account.create({
-    userId,
-    balance: 1 + Math.random() * 10000,
-  });
-
-  const token = jwt.sign(
-    {
+    //creating an account for the user and giving them random amount of balance to start with
+    const newAccount = await Account.create({
       userId,
-    },
-    env.JWT_SECRET
-  );
+      balance: 1 + Math.random() * 10000,
+    });
 
-  res.json({
-    message: "User created successfully",
-    token: token,
-    balance: newAccount,
-  });
+    const token = jwt.sign(
+      {
+        userId,
+      },
+      env.JWT_SECRET
+    );
+
+    res.json({
+      message: "User created successfully",
+      token: token,
+      balance: newAccount,
+    });
+  } catch (error) {
+    console.error("Error while signing up the user:", error);
+    res.status(statusCode.internalError).json({
+      message: "Internal server error",
+    });
+  }
 };
 
 export const login = async (req: Request, res: Response) => {
-  const { username, password } = req.body;
+  try {
+    const { username, password } = req.body;
 
-  const { success } = loginBody.safeParse(req.body);
-  if (!success) {
-    return res.status(statusCode.notAccepted).json({
-      message: "Incorrect inputs",
+    const { success } = loginBody.safeParse(req.body);
+    if (!success) {
+      return res.status(statusCode.notAccepted).json({
+        message: "Incorrect inputs",
+      });
+    }
+
+    const user = await User.findOne({ username }).select("+password");
+    if (!user) {
+      return res
+        .status(statusCode.notFound)
+        .json({ message: "User does not exist" });
+    }
+
+    const validPassword = await bcrypt.compare(password, user.password);
+    if (!validPassword) {
+      return res
+        .status(statusCode.invalidCredentials)
+        .json({ message: "Invalid credentials" });
+    }
+
+    if (user) {
+      const token = jwt.sign(
+        {
+          userId: user._id,
+        },
+        env.JWT_SECRET,
+        {
+          expiresIn: "1d",
+        }
+      );
+
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+      });
+
+      return res.json({
+        token: token,
+        message: "Login successful",
+      });
+    }
+
+    res.status(statusCode.notAccepted).json({
+      message: "Error while logging in",
+    });
+  } catch (error) {
+    console.error("Error logging in the user:", error);
+    res.status(statusCode.internalError).json({
+      message: "Internal server error",
     });
   }
-
-  const user = await User.findOne({ username });
-  if (!user) {
-    return res
-      .status(statusCode.notFound)
-      .json({ message: "User does not exist" });
-  }
-
-  const validPassword = await bcrypt.compare(password, user.password);
-  if (!validPassword) {
-    return res
-      .status(statusCode.invalidCredentials)
-      .json({ message: "Invalid credentials" });
-  }
-
-  if (user) {
-    const token = jwt.sign(
-      {
-        userId: user._id,
-      },
-      env.JWT_SECRET,
-      {
-        expiresIn: "1d",
-      }
-    );
-
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "strict",
-    });
-
-    res.json({
-      token: token,
-      message: "Login successful",
-    });
-    return;
-  }
-
-  res.status(statusCode.notAccepted).json({
-    message: "Error while logging in",
-  });
 };
 
 export const getUser = async (req: Request, res: Response) => {
@@ -145,33 +158,40 @@ export const getUser = async (req: Request, res: Response) => {
 };
 
 export const updateUser = async (req: Request, res: Response) => {
-  const { firstName, lastName, password } = req.body;
+  try {
+    const { firstName, lastName, password } = req.body;
 
-  //zod input validation
-  const { success } = updateBody.safeParse(req.body);
-  if (!success) {
-    return res.status(statusCode.notAccepted).json({
-      message: "Error while updating information",
+    //zod input validation
+    const { success } = updateBody.safeParse(req.body);
+    if (!success) {
+      return res.status(statusCode.notAccepted).json({
+        message: "Error while updating information",
+      });
+    }
+
+    // Update user information
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: req.userId }, // Query to find the user by userId
+      { firstName, lastName, password }, // Updated fields
+      { new: true } // Return the modified document
+    );
+
+    // Check if user was found and updated
+    if (!updatedUser) {
+      return res.status(statusCode.notFound).json({
+        message: "User not found",
+      });
+    }
+
+    res.status(statusCode.success).json({
+      message: "Updated Successfully",
+    });
+  } catch (error) {
+    console.error("Error updating the user:", error);
+    res.status(statusCode.internalError).json({
+      message: "Internal server error",
     });
   }
-
-  // Update user information
-  const updatedUser = await User.findOneAndUpdate(
-    { _id: req.userId }, // Query to find the user by userId
-    { firstName, lastName, password }, // Updated fields
-    { new: true } // Return the modified document
-  );
-
-  // Check if user was found and updated
-  if (!updatedUser) {
-    return res.status(statusCode.notFound).json({
-      message: "User not found",
-    });
-  }
-
-  res.status(statusCode.success).json({
-    message: "Updated Successfully",
-  });
 };
 
 export const logout = (req: Request, res: Response) => {

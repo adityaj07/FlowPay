@@ -4,6 +4,7 @@ import {
   deleteUser,
   getUser,
   login,
+  logout,
   signup,
   updateUser,
 } from "../controllers/user";
@@ -13,6 +14,7 @@ const userRouter = Router();
 
 userRouter.post("/signup", signup);
 userRouter.post("/login", authMiddleware, login);
+userRouter.post("/logout", authMiddleware, logout);
 userRouter.get("/", authMiddleware, getUser);
 userRouter.put("/updateUser", authMiddleware, updateUser);
 userRouter.get("/bulk", authMiddleware, bulk);
