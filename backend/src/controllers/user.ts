@@ -7,6 +7,7 @@ import { config } from "dotenv";
 import { connectDB } from "../db";
 import { statusCode } from "../types/types";
 import { signupBody, loginBody, updateBody } from "../types/authTypes";
+import Account from "../models/Account";
 config();
 
 connectDB();
@@ -46,6 +47,12 @@ export const signup = async (req: Request, res: Response) => {
 
   const userId = newUser._id;
 
+  //creating an account for the user and giving them random amount of balance to start with
+  const newAccount = await Account.create({
+    userId,
+    balance: 1 + Math.random() * 10000
+  })
+
   const token = jwt.sign(
     {
       userId,
@@ -56,6 +63,7 @@ export const signup = async (req: Request, res: Response) => {
   res.json({
     message: "User created successfully",
     token: token,
+    balance: newAccount
   });
 };
 
@@ -130,6 +138,19 @@ export const updateUser = async (req: Request, res: Response) => {
   res.status(statusCode.success).json({
     message: "Updated Successfully",
   });
+};
+
+export const logout = (req: Request, res: Response) => {
+  try {
+    // Clear the token cookie to log the user out
+    res.clearCookie("token");
+    res.status(200).json({ message: "Logout Successful" });
+  } catch (error) {
+    console.error("Errorlogging out:", error);
+    res.status(statusCode.internalError).json({
+      message: "Internal server error",
+    });
+  }
 };
 
 export const bulk = async (req: Request, res: Response) => {
