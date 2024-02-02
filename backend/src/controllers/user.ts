@@ -50,8 +50,8 @@ export const signup = async (req: Request, res: Response) => {
   //creating an account for the user and giving them random amount of balance to start with
   const newAccount = await Account.create({
     userId,
-    balance: 1 + Math.random() * 10000
-  })
+    balance: 1 + Math.random() * 10000,
+  });
 
   const token = jwt.sign(
     {
@@ -63,7 +63,7 @@ export const signup = async (req: Request, res: Response) => {
   res.json({
     message: "User created successfully",
     token: token,
-    balance: newAccount
+    balance: newAccount,
   });
 };
 
@@ -96,11 +96,21 @@ export const login = async (req: Request, res: Response) => {
       {
         userId: user._id,
       },
-      env.JWT_SECRET
+      env.JWT_SECRET,
+      {
+        expiresIn: "1d",
+      }
     );
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+    });
 
     res.json({
       token: token,
+      message: "Login successful",
     });
     return;
   }
@@ -184,6 +194,39 @@ export const bulk = async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.error("Error fetching users:", error);
+    res.status(statusCode.internalError).json({
+      message: "Internal server error",
+    });
+  }
+};
+
+export const deleteUser = async (req: Request, res: Response) => {
+  try {
+    const user = await User.findOne({
+      _id: req.userId,
+    });
+
+    if (!user) {
+      return res.status(statusCode.notFound).json({
+        message: "User not found",
+      });
+    }
+
+    // Find and delete the associated account
+    await Account.findOneAndDelete({
+      userId: user._id,
+    });
+
+    // Delete the user
+    await User.deleteOne({
+      _id: user._id,
+    });
+
+    res.status(statusCode.success).json({
+      message: "User and associated account deleted successfully",
+    });
+  } catch (error) {
+    console.error("Error deleting user:", error);
     res.status(statusCode.internalError).json({
       message: "Internal server error",
     });
