@@ -120,6 +120,30 @@ export const login = async (req: Request, res: Response) => {
   });
 };
 
+export const getUser = async (req: Request, res: Response) => {
+  try {
+    const user = await User.findOne({
+      _id: req.userId,
+    });
+
+    if (!user) {
+      return res.status(statusCode.notFound).json({
+        message: "User not found",
+      });
+    }
+
+    res.status(statusCode.success).json({
+      message: "User found",
+      user,
+    });
+  } catch (error) {
+    console.error("Error getting the user:", error);
+    res.status(statusCode.internalError).json({
+      message: "Internal server error",
+    });
+  }
+};
+
 export const updateUser = async (req: Request, res: Response) => {
   const { firstName, lastName, password } = req.body;
 
@@ -156,7 +180,7 @@ export const logout = (req: Request, res: Response) => {
     res.clearCookie("token");
     res.status(200).json({ message: "Logout Successful" });
   } catch (error) {
-    console.error("Errorlogging out:", error);
+    console.error("Error logging out:", error);
     res.status(statusCode.internalError).json({
       message: "Internal server error",
     });
