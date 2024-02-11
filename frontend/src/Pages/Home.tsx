@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 const Home: FC = () => {
   return (
     <motion.div
-      className="flex gap-2 items-center justify-center"
+      className="flex gap-2 items-center justify-center "
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
