@@ -55,12 +55,12 @@ const DashboardNavbar: FC<DashboardNavbarProps> = ({}) => {
     }
   };
   return (
-    // Navbar for desktop
     <>
-      <div className="flex-col justify-between items-center px-4 py-2 h-screen rounded-tr-xl rounded-br-xl hidden lg:flex border-r border-r-zinc-400/20">
+    {/* // Navbar for desktop */}
+      <div className="flex-col justify-between items-center px-4 py-2 h-screen hidden lg:flex ">
         <div className="flex flex-col gap-4 w-full">
           <Link
-            to="/dashboard"
+            to="/dashboard/home"
             className="flex gap-2 justify-start items-center"
           >
             <img src="/assets/logo.png" alt="logo" className="w-[88px]" />
@@ -72,6 +72,7 @@ const DashboardNavbar: FC<DashboardNavbarProps> = ({}) => {
           {dashboardNavLinks.map((navLink) => (
             <NavLink
               to={navLink.link}
+              key={navLink.name}
               className={({ isActive }) =>
                 isActive
                   ? "flex justify-start items-center gap-2 px-5 py-3 rounded-lg bg-slate-500/30 hover:bg-slate-500/30 transition-colors duration-150"
@@ -98,6 +99,7 @@ const DashboardNavbar: FC<DashboardNavbarProps> = ({}) => {
         {dashboardNavLinks.map((navLink) => (
           <NavLink
             to={navLink.link}
+            key={navLink.name}
             className={({ isActive }) =>
               isActive
                 ? "flex justify-center items-center flex-col gap-2 rounded-lg px-2 py-3 bg-slate-500/30 hover:bg-slate-500/30 transition-colors duration-200 w-[20%]  border-t border-t-zinc-400/50 hover:border-t hover:border-t-zinc-400/50"

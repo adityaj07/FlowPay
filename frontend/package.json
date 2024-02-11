@@ -27,6 +27,7 @@
     "react-hook-form": "^7.50.0",
     "react-router-dom": "^6.22.0",
     "recoil": "^0.7.7",
+    "tailwind-gradient-mask-image": "^1.2.0",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.22.4"
