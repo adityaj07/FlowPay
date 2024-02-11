@@ -6,10 +6,5 @@
       "use": "@vercel/node"
     }
   ],
-  "routes": [{ "src": "src/(.*)", "dest": "index.ts" }],
-  "env": {
-    "MONGO_URL": "@mongo-url",
-    "JWT_SECRET": "@jwt-secret",
-    "PORT": "@port"
-  }
+  "routes": [{ "src": "src/(.*)", "dest": "index.ts" }]
 }
