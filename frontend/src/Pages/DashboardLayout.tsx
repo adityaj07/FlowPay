@@ -24,7 +24,6 @@ const Dashboard: FC<DashboardProps> = ({}) => {
           <DashboardNavbar />
         </div>
         <div className="w-full px-4 py-9 h-screen bg-slate-500/30 lg:rounded-tl-[2.5rem] lg:rounded-bl-[2.5rem] border-l border-r-zinc-400/20 ">
-          
           <Outlet />
         </div>
       </div>
