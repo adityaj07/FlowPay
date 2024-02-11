@@ -1,11 +1,7 @@
 import { FC, lazy } from "react";
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import axiosInstance from "@/api/axiosInstance";
-import { useToast } from "@/components/ui/use-toast";
-import { Outlet, useNavigate } from "react-router-dom";
-import DashboardHeader from "./DashboardHeader";
-import { Separator } from "@/components/ui/separator";
+import { Outlet } from "react-router-dom";
+
 
 const DashboardNavbar = lazy(() => import("./DashboardNavbar"));
 
