@@ -3,6 +3,7 @@ import { Suspense, lazy } from "react";
 import "./App.css";
 import PageSkeleton from "./components/ui/skeletons/pageSkeleton";
 import Navbar from "./components/Navbar";
+import DashboardTransferFunds from "./Pages/DashboardTransferFunds";
 
 const Home = lazy(() => import("./Pages/Home"));
 const Signup = lazy(() => import("./Pages/Signup"));
@@ -62,8 +63,12 @@ function App() {
             </Suspense>
           }
         >
-          <Route path="/dashboard/" element={<DashboardHome />} />
+          <Route path="/dashboard/home" element={<DashboardHome />} />
           <Route path="/dashboard/profile" element={<DashboardProfile />} />
+          <Route
+            path="/dashboard/transferfunds"
+            element={<DashboardTransferFunds />}
+          />
           <Route path="/dashboard/settings" element={<DashboardSettings />} />
         </Route>
         <Route

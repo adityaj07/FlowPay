@@ -9,22 +9,8 @@ const DashboardNavbar = lazy(() => import("./DashboardNavbar"));
 interface DashboardProps {}
 
 const Dashboard: FC<DashboardProps> = ({}) => {
-  const { toast } = useToast();
-  const navigate = useNavigate();
-  const handleLogout = async () => {
-    const res = await axiosInstance.post("/user/logout");
-
-    if (res.status === 200) {
-      toast({
-        description: "Logged out successfully",
-      });
-      navigate("/");
-    } else {
-      toast({
-        description: "Error logging out",
-      });
-    }
-  };
+  
+  
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -32,11 +18,11 @@ const Dashboard: FC<DashboardProps> = ({}) => {
       transition={{ duration: 0.5 }}
       className="w-screen h-screen"
     >
-      <div className="grid grid-cols-2">
-        <div className="w-1/3">
+      <div className="grid grid-cols-1 lg:grid-cols-2">
+        <div className="w-full lg:w-1/3">
           <DashboardNavbar />
         </div>
-        <div className="w-2/3">
+        <div className="w-full lg:w-2/3 ">
           <Outlet />
         </div>
       </div>

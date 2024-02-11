@@ -64,7 +64,7 @@ const Signup = () => {
         toast({
           description: "Signup successful",
         });
-        navigate("/dashboard");
+        navigate("/dashboard/home");
       } else {
         // toast.error('Failed to sign up',{
         //   position:'top-center'
