@@ -6,7 +6,7 @@ const app = express();
 import rootRouter from "./routes";
 
 app.use(cors({
-  origin: "*", 
+  origin: env.FRONTEND_URL, 
   credentials:true,          
 }));
 app.use(express.json());
