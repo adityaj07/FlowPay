@@ -1,19 +1,15 @@
 {
-    "version": 2,
-    "builds": [
-      {
-        "src": "index.ts",
-        "use": "@vercel/node"
-      }
-    ],
-    "routes": [
-      { "src": "/api/(.*)", "dest": "index.ts" },
-      { "src": "/(.*)", "dest": "index.ts" }
-    ],
-    "env": {
-      "MONGO_URL": "@mongo-url",
-      "JWT_SECRET": "@jwt-secret",
-      "PORT": "@port"
+  "version": 2,
+  "builds": [
+    {
+      "src": "index.ts",
+      "use": "@vercel/node"
     }
+  ],
+  "routes": [{ "src": "src/(.*)", "dest": "index.ts" }],
+  "env": {
+    "MONGO_URL": "@mongo-url",
+    "JWT_SECRET": "@jwt-secret",
+    "PORT": "@port"
   }
-  
+}
