@@ -14,18 +14,19 @@ declare global {
 }
 
 const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
-  const authHeader = req.headers.authorization;
+  const authHeader = req.headers.cookie;
 
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+
+  if (!authHeader || !authHeader.startsWith("Bearer")) {
     return res.status(statusCode.authError).json({
       message: "Invalid token",
     });
   }
 
-  const token = authHeader.split(" ")[1];
+  const token = authHeader?.split("=")[1];
 
   try {
-    const decoded: JwtPayload = jwt.verify(token, env.JWT_SECRET) as JwtPayload;
+    const decoded: JwtPayload = jwt.verify(token!, env.JWT_SECRET) as JwtPayload;
 
     req.userId = decoded.userId;
 

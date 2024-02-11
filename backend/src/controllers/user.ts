@@ -61,6 +61,12 @@ export const signup = async (req: Request, res: Response) => {
       env.JWT_SECRET
     );
 
+    res.cookie("Bearer", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+    });
+
     res.json({
       message: "User created successfully",
       token: token,
@@ -110,7 +116,7 @@ export const login = async (req: Request, res: Response) => {
         }
       );
 
-      res.cookie("token", token, {
+      res.cookie("Bearer", token, {
         httpOnly: true,
         secure: true,
         sameSite: "strict",
@@ -163,6 +169,7 @@ export const updateUser = async (req: Request, res: Response) => {
 
     //zod input validation
     const { success } = updateBody.safeParse(req.body);
+   
     if (!success) {
       return res.status(statusCode.notAccepted).json({
         message: "Error while updating information",
@@ -197,7 +204,7 @@ export const updateUser = async (req: Request, res: Response) => {
 export const logout = (req: Request, res: Response) => {
   try {
     // Clear the token cookie to log the user out
-    res.clearCookie("token");
+    res.clearCookie("Bearer");
     res.status(200).json({ message: "Logout Successful" });
   } catch (error) {
     console.error("Error logging out:", error);
