@@ -17,10 +17,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 
 const formSchema = z.object({
-  username: z.string().email(),
-  firstName: z.string(),
-  lastName: z.string(),
-  password: z.string(),
+  username: z.string().email("Invalid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
 const Login = () => {
@@ -31,8 +29,6 @@ const Login = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       username: "",
-      firstName: "",
-      lastName: "",
       password: "",
     },
   });
@@ -57,19 +53,14 @@ const Login = () => {
         });
         navigate("/dashboard/home");
       } else {
-        // toast.error('Failed to sign up',{
-        //   position:'top-center'
-        // });
         toast({
           description: "Error logging in",
         });
       }
-      console.log(response);
-    } catch (error) {
-      // toast.error('Failed to sign up.Please try again later.',{
-      //   position:'top-center'
-      // });
-      console.log(error);
+    } catch (error: any) {
+      toast({
+        description: error.response.data.message,
+      });
     }
   }
   return (
