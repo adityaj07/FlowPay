@@ -169,7 +169,7 @@ export const updateUser = async (req: Request, res: Response) => {
 
     //zod input validation
     const { success } = updateBody.safeParse(req.body);
-   
+
     if (!success) {
       return res.status(statusCode.notAccepted).json({
         message: "Error while updating information",
@@ -216,19 +216,27 @@ export const logout = (req: Request, res: Response) => {
 
 export const bulk = async (req: Request, res: Response) => {
   const filter = req.query.filter || "";
+  const currentUserId = req.userId;
 
   try {
     const users = await User.find({
-      $or: [
+      $and: [
         {
-          firstName: {
-            $regex: filter,
-          },
+          _id: { $ne: currentUserId },
         },
         {
-          lastName: {
-            $regex: filter,
-          },
+          $or: [
+            {
+              firstName: {
+                $regex: filter,
+              },
+            },
+            {
+              lastName: {
+                $regex: filter,
+              },
+            },
+          ],
         },
       ],
     });
