@@ -2,11 +2,10 @@ import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
 import { FC } from "react";
 
-
 interface DashboardHeaderProps {
-  text?:string,
-  user?:User | null,
-  handlefn?: () => Promise<void>
+  text?: string;
+  user?: User | null;
+  handlefn?: () => Promise<void>;
 }
 
 interface User {
@@ -16,26 +15,25 @@ interface User {
   lastName: string;
 }
 
-const DashboardHeader: FC<DashboardHeaderProps> = ({text, user, handlefn}) => {
-
+const DashboardHeader: FC<DashboardHeaderProps> = ({
+  text,
+  user,
+  handlefn,
+}) => {
   const handleLogout = handlefn;
 
   return (
     <div className="w-full flex justify-between items-center">
       <div>
-        {user && (
-          <h1 className="text-3xl ">
-            Welcome back,{" "}
-            <span className="font-semibold">{user.firstName} !</span>
-          </h1>
-        )}
-        {
-          text && (
+       
+          {user && (
             <h1 className="text-3xl ">
-            {text}
-          </h1>
-          )
-        }
+              Welcome back,{" "}
+              <span className="font-semibold">{user.firstName} !</span>
+            </h1>
+          )}
+
+        {text && <h1 className="text-3xl ">{text}</h1>}
       </div>
       <Button
         variant="secondary"

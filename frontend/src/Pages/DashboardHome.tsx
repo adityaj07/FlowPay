@@ -48,7 +48,7 @@ const DashboardHome: FC<DashboardHomeProps> = ({}) => {
 
   return (
     <div>
-      <DashboardHeader user={user} handlefn={handleLogout} />
+        <DashboardHeader user={user} handlefn={handleLogout} />
       <Separator className="bg-slate-100/30 my-4" />
       <UserBalance />
     </div>
