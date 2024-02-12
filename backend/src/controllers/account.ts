@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { config } from "dotenv";
-import { connectDB } from "../db";
+import { connectDB } from "../db/db";
 import { statusCode } from "../types/types";
 import Account from "../models/Account";
 import mongoose from "mongoose";

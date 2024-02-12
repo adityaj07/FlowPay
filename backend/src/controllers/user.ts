@@ -4,7 +4,7 @@ import User from "../models/User";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { config } from "dotenv";
-import { connectDB } from "../db";
+import { connectDB } from "../db/db";
 import { statusCode } from "../types/types";
 import { signupBody, loginBody, updateBody } from "../types/authTypes";
 import Account from "../models/Account";
