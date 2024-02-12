@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import axiosInstance from "@/api/axiosInstance";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 
 const formSchema = z.object({
   username: z.string().email("Invalid email address"),
@@ -117,7 +117,14 @@ const Login = () => {
                       </FormItem>
                     )}
                   />
-                  <Button variant={"outline"} type="submit">
+                  <Button
+                    variant={"outline"}
+                    type="submit"
+                    disabled={form.formState.isSubmitting}
+                  >
+                    {form.formState.isSubmitting && (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    )}
                     Login
                   </Button>
                 </form>

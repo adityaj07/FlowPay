@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import axiosInstance from "@/api/axiosInstance";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 
 const formSchema = z.object({
   username: z.string().email("Invalid email address"),
@@ -22,7 +22,6 @@ const formSchema = z.object({
   lastName: z.string().min(2, "Last name must be at least 2 characters"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
-
 
 const Signup = () => {
   const { toast } = useToast();
@@ -62,6 +61,7 @@ const Signup = () => {
         toast({
           description: "Signup successful",
         });
+
         navigate("/dashboard/home");
       } else {
         toast({
@@ -161,7 +161,14 @@ const Signup = () => {
                       </FormItem>
                     )}
                   />
-                  <Button variant={"outline"} type="submit">
+                  <Button
+                    variant={"outline"}
+                    type="submit"
+                    disabled={form.formState.isSubmitting}
+                  >
+                    {form.formState.isSubmitSuccessful && (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    )}
                     Sign up
                   </Button>
                 </form>
