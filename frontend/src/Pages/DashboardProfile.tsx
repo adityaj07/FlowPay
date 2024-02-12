@@ -108,7 +108,7 @@ const DashboardProfile: FC<DashboardProfileProps> = ({}) => {
       <Separator className="bg-slate-100/30 my-4" />
       <div className="bg-background w-full p-8 rounded-lg relative overflow-hidden">
         {user && (
-          <h1 className="text-md">
+          <h1 className="text-sm md:text-md ">
             Your user id is{" "}
             <span className="bg-slate-500/50 p-2 rounded-full">
               {user?._id}
@@ -117,15 +117,15 @@ const DashboardProfile: FC<DashboardProfileProps> = ({}) => {
         )}
         <div className="flex justify-start items-center mt-6 ">
           <Avatar className="w-24 h-24">
-            <AvatarFallback className="text-5xl font-black">
+            <AvatarFallback className="text-2xl md:text-5xl font-black">
               {user?.firstName?.split("")[0]}
             </AvatarFallback>
           </Avatar>
           <div className="flex flex-col gap-2 ">
-            <span className=" ml-6 font-extrabold text-5xl">
+            <span className=" ml-6 font-extrabold text-2xl md:text-5xl">
               {user?.firstName} {user?.lastName}
             </span>
-            <span className="text-small ml-6">{user?.username}</span>
+            <span className="text-xs md:text-sm ml-6">{user?.username}</span>
           </div>
         </div>
         <img
