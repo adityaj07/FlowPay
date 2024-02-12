@@ -1,9 +1,9 @@
 import express, { Request, Response } from "express";
-import env from "./utils/validateEnv";
+import env from "../src/utils/validateEnv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 const app = express();
-import rootRouter from "./routes";
+import rootRouter from "../src/routes";
 
 app.use(
   cors({
