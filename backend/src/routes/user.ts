@@ -16,8 +16,8 @@ userRouter.post("/signup", signup);
 userRouter.post("/login", login);
 userRouter.post("/logout", authMiddleware, logout);
 userRouter.get("/", authMiddleware, getUser);
-userRouter.put("/updateUser", authMiddleware, updateUser);
+userRouter.put("/updateuser", authMiddleware, updateUser);
 userRouter.get("/bulk", authMiddleware, bulk);
-userRouter.delete("/deleteUser", authMiddleware, deleteUser);
+userRouter.delete("/deleteuser", authMiddleware, deleteUser);
 
 export default userRouter;

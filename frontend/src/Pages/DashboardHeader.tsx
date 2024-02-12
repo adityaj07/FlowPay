@@ -21,7 +21,7 @@ const DashboardHeader: FC<DashboardHeaderProps> = ({text, user, handlefn}) => {
   const handleLogout = handlefn;
 
   return (
-    <div className="w-full flex justify-between items-center py-4">
+    <div className="w-full flex justify-between items-center">
       <div>
         {user && (
           <h1 className="text-3xl ">
