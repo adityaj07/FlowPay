@@ -49,9 +49,9 @@ const DashboardSettings: FC<DashboardSettingsProps> = ({}) => {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-2">
+        <div className="mt-12 flex flex-col gap-2 border border-red-600 p-4 rounded-lg lg:w-[60%]">
           <h2 className="text-xl font-medium text-red-500">Danger Zone</h2>
-          <div className="w-full lg:w-[60%] px-4 py-3 bg-background rounded-md flex justify-between items-center">
+          <div className="w-full px-4 py-3 bg-background rounded-md flex justify-between items-center">
             <span>Delete your account</span>
             <Button size="icon" variant="outline">
               <ConfirmDialogue

@@ -39,13 +39,6 @@ const Signup = () => {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      console.log(
-        typeof values.username,
-        typeof values.firstName,
-        typeof values.lastName,
-        typeof values.password
-      );
-
       const { username, firstName, lastName, password } = values;
       const requestData = {
         username: username.trim(),
@@ -53,7 +46,6 @@ const Signup = () => {
         lastName: lastName.trim(),
         password: password.trim(),
       };
-      console.log(requestData);
       const response = await axiosInstance.post("/user/signup", requestData);
 
       if (response.status === 200) {
@@ -166,7 +158,7 @@ const Signup = () => {
                     type="submit"
                     disabled={form.formState.isSubmitting}
                   >
-                    {form.formState.isSubmitSuccessful && (
+                    {form.formState.isSubmitting && (
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     )}
                     Sign up
