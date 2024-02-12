@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import ConfirmDialogue from "@/components/ConfirmDialogue";
 import axiosInstance from "@/api/axiosInstance";
 import { useNavigate } from "react-router-dom";
-import { toast, useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 
 interface DashboardSettingsProps {}
 

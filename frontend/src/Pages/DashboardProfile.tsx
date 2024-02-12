@@ -103,7 +103,7 @@ const DashboardProfile: FC<DashboardProfileProps> = ({}) => {
   }
 
   return (
-    <div>
+    <div className="h-screen md:h-fit">
       <DashboardHeader text="Profile" />
       <Separator className="bg-slate-100/30 my-4" />
       <div className="bg-background w-full p-8 rounded-lg relative overflow-hidden">
@@ -135,10 +135,10 @@ const DashboardProfile: FC<DashboardProfileProps> = ({}) => {
         />
       </div>
 
-      <h2 className="mt-12 mb-5 text-2xl font-medium ">
+      <h2 className="mt-4 mb-2 md:mt-12 md:mb-5 text-2xl font-medium ">
         Update your information
       </h2>
-      <Card className="w-full lg:max-w-[70%]">
+      <Card className="w-full lg:max-w-[70%] ">
         <CardHeader>
           <CardTitle>Update Profile</CardTitle>
           <CardDescription>Enter your details.</CardDescription>

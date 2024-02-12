@@ -57,7 +57,7 @@ const DashboardNavbar: FC<DashboardNavbarProps> = ({}) => {
   return (
     <>
     {/* // Navbar for desktop */}
-      <div className="flex-col justify-between items-center px-4 py-2 h-screen hidden lg:flex ">
+      <nav className="flex-col justify-between items-center px-4 py-2 h-screen hidden lg:flex ">
         <div className="flex flex-col gap-4 w-full">
           <Link
             to="/dashboard/home"
@@ -92,10 +92,10 @@ const DashboardNavbar: FC<DashboardNavbarProps> = ({}) => {
           <LogOut />
           <span>Logout</span>
         </Button>
-      </div>
+      </nav>
 
       {/*  Navbar for mobile/tablet */}
-      <div className="fixed bottom-1 flex justify-around items-center space-x-5 lg:hidden  rounded-tr-2xl rounded-tl-2xl pt-2 pb-1 w-full">
+      <nav className="fixed bottom-0 flex justify-around items-center space-x-5 lg:hidden  rounded-tr-2xl rounded-tl-2xl pb-1 w-full bg-slate-500">
         {dashboardNavLinks.map((navLink) => (
           <NavLink
             to={navLink.link}
@@ -110,7 +110,7 @@ const DashboardNavbar: FC<DashboardNavbarProps> = ({}) => {
             <p className="text-[0.70rem] md:text-[0.8rem]">{navLink.name}</p>
           </NavLink>
         ))}
-      </div>
+      </nav>
     </>
   );
 };
