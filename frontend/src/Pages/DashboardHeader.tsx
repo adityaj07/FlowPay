@@ -1,11 +1,13 @@
-import axiosInstance from "@/api/axiosInstance";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
 import { LogOut } from "lucide-react";
-import { FC, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { FC } from "react";
 
-interface DashboardHeaderProps {}
+
+interface DashboardHeaderProps {
+  text?:string,
+  user?:User | null,
+  handlefn?: () => Promise<void>
+}
 
 interface User {
   _id: string;
@@ -14,36 +16,9 @@ interface User {
   lastName: string;
 }
 
-const DashboardHeader: FC<DashboardHeaderProps> = ({}) => {
-  const [user, setUser] = useState<User | null>(null);
+const DashboardHeader: FC<DashboardHeaderProps> = ({text, user, handlefn}) => {
 
-  useEffect(() => {
-    const getUser = async () => {
-      const res = await axiosInstance.get("/user");
-      const user = res.data.user;
-      console.log(user);
-      setUser(user);
-    };
-
-    getUser();
-  }, []);
-
-  const { toast } = useToast();
-  const navigate = useNavigate();
-  const handleLogout = async () => {
-    const res = await axiosInstance.post("/user/logout");
-
-    if (res.status === 200) {
-      toast({
-        description: "Logged out successfully",
-      });
-      navigate("/");
-    } else {
-      toast({
-        description: "Error logging out",
-      });
-    }
-  };
+  const handleLogout = handlefn;
 
   return (
     <div className="w-full flex justify-between items-center py-4">
@@ -54,6 +29,13 @@ const DashboardHeader: FC<DashboardHeaderProps> = ({}) => {
             <span className="font-semibold">{user.firstName} !</span>
           </h1>
         )}
+        {
+          text && (
+            <h1 className="text-3xl ">
+            {text}
+          </h1>
+          )
+        }
       </div>
       <Button
         variant="secondary"
