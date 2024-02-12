@@ -64,7 +64,7 @@ export const signup = async (req: Request, res: Response) => {
     res.cookie("Bearer", token, {
       httpOnly: true,
       secure: true,
-      sameSite: "strict",
+      sameSite: "none",
     });
 
     res.json({
@@ -119,7 +119,7 @@ export const login = async (req: Request, res: Response) => {
       res.cookie("Bearer", token, {
         httpOnly: true,
         secure: true,
-        sameSite: "strict",
+        sameSite: "none",
       });
 
       return res.json({
