@@ -230,11 +230,13 @@ export const bulk = async (req: Request, res: Response) => {
             {
               firstName: {
                 $regex: filter,
+                $options: "i", // Case-insensitive option
               },
             },
             {
               lastName: {
                 $regex: filter,
+                $options: "i", // Case-insensitive option
               },
             },
           ],
