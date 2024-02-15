@@ -12,7 +12,6 @@ const DashboardLayout = lazy(() => import("./Pages/DashboardLayout"));
 const DashboardHome = lazy(() => import("./Pages/DashboardHome"));
 const DashboardSettings = lazy(() => import("./Pages/DashboardSettings"));
 const DashboardProfile = lazy(() => import("./Pages/DashboardProfile"));
-const SendMoney = lazy(() => import("./Pages/SendMoney"));
 
 function App() {
   const location = useLocation();
@@ -71,18 +70,7 @@ function App() {
           />
           <Route path="/dashboard/settings" element={<DashboardSettings />} />
         </Route>
-        <Route
-          path="/send"
-          element={
-            <Suspense
-              fallback={
-                <PageSkeleton loadingText="Loading SendMoney page..." />
-              }
-            >
-              <SendMoney />
-            </Suspense>
-          }
-        />
+       
       </Routes>
     </>
   );

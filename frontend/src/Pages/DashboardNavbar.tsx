@@ -102,7 +102,7 @@ const DashboardNavbar: FC<DashboardNavbarProps> = ({}) => {
             key={navLink.name}
             className={({ isActive }) =>
               isActive
-                ? "flex justify-center items-center flex-col gap-2 rounded-lg px-2 py-3 bg-slate-500/30 hover:bg-slate-500/30 transition-colors duration-200 w-[20%]  border-t border-t-zinc-400/50 hover:border-t hover:border-t-zinc-400/50"
+                ? "flex justify-center items-center flex-col gap-2 rounded-lg px-2 py-3 bg-slate-900/50  transition-colors duration-200 w-[20%] border-t border-t-zinc-400/50 hover:border-t hover:border-t-zinc-400/50"
                 : "flex justify-center items-center flex-col gap-2 rounded-lg px-2 py-3 hover:bg-slate-900/50 transition-colors duration-200 w-[20%]  border-t border-t-zinc-400/50 hover:border-t hover:border-t-zinc-400/50 "
             }
           >
