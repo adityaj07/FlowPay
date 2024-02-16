@@ -50,12 +50,12 @@ const DashboardProfile: FC<DashboardProfileProps> = ({}) => {
     const getUser = async () => {
       const res = await axiosInstance.get("/user");
       const user = res.data.user;
-      console.log(user);
+      // console.log(user);
       setUser(user);
     };
 
     getUser();
-  }, [user]);
+  }, []);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

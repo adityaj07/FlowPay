@@ -4,7 +4,9 @@ import { Label } from "./ui/label";
 import axiosInstance from "@/api/axiosInstance";
 import { useToast } from "./ui/use-toast";
 
-interface SearchBarProps {}
+interface SearchBarProps {
+  setRecepient: React.Dispatch<React.SetStateAction<User | null>>;
+}
 
 interface User {
   _id: string;
@@ -13,7 +15,7 @@ interface User {
   lastName: string;
 }
 
-const SearchBar: FC<SearchBarProps> = ({}) => {
+const SearchBar: FC<SearchBarProps> = ({ setRecepient }) => {
   const [users, setUsers] = useState<User[]>([]);
   const [filter, setFilter] = useState("");
   const [debouncedFilter, setDebouncedFilter] = useState("");
@@ -56,6 +58,7 @@ const SearchBar: FC<SearchBarProps> = ({}) => {
 
   const handleUserItemClick = (user: User) => {
     setFilter(`${user.firstName} ${user.lastName}`);
+    setRecepient(user);
     setSearchResultsDivOpen(false);
   };
 
@@ -64,7 +67,7 @@ const SearchBar: FC<SearchBarProps> = ({}) => {
   };
 
   return (
-    <>
+    <div className="relative flex justify-center">
       <div className="flex gap-2 justify-center items-center border border-zinc-400/50 rounded-full bg-background w-full md:w-[80%] lg:w-[60%] px-4 py-1 mx-auto">
         <Label htmlFor="search" className="cursor-pointer">
           <Search />
@@ -86,7 +89,7 @@ const SearchBar: FC<SearchBarProps> = ({}) => {
         )}
       </div>
       {users.length > 0 && searchResultsDivOpen && (
-        <div className="w-full md:w-[80%] lg:w-[60%] mx-auto mt-2 rounded-xl bg-background px-3 py-4">
+        <div className="w-full md:w-[80%] lg:w-[60%] mx-auto mt-2 rounded-xl bg-background px-3 py-4 absolute z-10 top-12">
           {users.map((user, index) => (
             <div
               key={user._id}
@@ -106,7 +109,7 @@ const SearchBar: FC<SearchBarProps> = ({}) => {
           ))}
         </div>
       )}
-    </>
+    </div>
   );
 };
 
