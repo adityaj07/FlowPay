@@ -49,7 +49,7 @@ const Signup = () => {
       const response = await axiosInstance.post("/user/signup", requestData);
 
       if (response.status === 200) {
-        console.log(response.data);
+        // console.log(response.data);
         toast({
           description: "Signup successful",
         });
@@ -60,7 +60,7 @@ const Signup = () => {
           description: "error registering",
         });
       }
-      console.log(response);
+      // console.log(response);
     } catch (error: any) {
       toast({
         description: error.response.data.message,
@@ -109,7 +109,7 @@ const Signup = () => {
                     name="firstName"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>FirstName</FormLabel>
+                        <FormLabel>First Name</FormLabel>
                         <FormControl>
                           <Input
                             placeholder="Enter your firstname"
@@ -126,7 +126,7 @@ const Signup = () => {
                     name="lastName"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>LastName</FormLabel>
+                        <FormLabel>Last Name</FormLabel>
                         <FormControl>
                           <Input placeholder="Enter your lastname" {...field} />
                         </FormControl>
