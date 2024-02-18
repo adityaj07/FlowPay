@@ -50,7 +50,6 @@ const DashboardProfile: FC<DashboardProfileProps> = ({}) => {
     const getUser = async () => {
       const res = await axiosInstance.get("/user");
       const user = res.data.user;
-      // console.log(user);
       setUser(user);
     };
 
@@ -94,7 +93,6 @@ const DashboardProfile: FC<DashboardProfileProps> = ({}) => {
           description: response.data.message,
         });
       }
-      console.log(response);
     } catch (error: any) {
       toast({
         description: error.response.data.message,

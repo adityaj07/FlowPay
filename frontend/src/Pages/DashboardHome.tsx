@@ -28,13 +28,13 @@ const DashboardHome: FC<DashboardHomeProps> = ({}) => {
     getUser();
   }, []);
 
+  const {logout} = useAuth()
   const { toast } = useToast();
   // const navigate = useNavigate();
   const handleLogout = async () => {
     const res = await axiosInstance.post("/user/logout");
 
     if (res.status === 200) {
-      const {logout} = useAuth()
       toast({
         description: "Logged out successfully",
       });

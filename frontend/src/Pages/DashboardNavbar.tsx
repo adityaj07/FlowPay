@@ -40,17 +40,18 @@ const dashboardNavLinks: NavLink[] = [
 
 const DashboardNavbar: FC<DashboardNavbarProps> = ({}) => {
   const { toast } = useToast();
+  const {logout} = useAuth();
 
   const handleLogout = async () => {
     const res = await axiosInstance.post("/user/logout");
+
     
     if (res.status === 200) {
-      const {logout} = useAuth();
+      logout();
       toast({
         description: "Logged out successfully",
       });
       // navigate("/");
-      logout()
     } else {
       toast({
         description: "Error logging out",

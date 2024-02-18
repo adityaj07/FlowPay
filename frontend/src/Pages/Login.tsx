@@ -44,7 +44,6 @@ const Login = () => {
 
       const response = await axiosInstance.post("/user/login", requestData);
 
-      console.log(response.data.userDTO);
 
       if (response.status === 200) {
         const user = response.data.userDTO;
