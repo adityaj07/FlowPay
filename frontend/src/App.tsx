@@ -58,11 +58,7 @@ function App() {
           path="/dashboard"
           element={
             <ProtectedRoute>
-              <Suspense
-                fallback={<PageSkeleton loadingText="Loading Dashboard..." />}
-              >
-                <DashboardLayout />
-              </Suspense>
+              <DashboardLayout />
             </ProtectedRoute>
           }
         >
@@ -70,7 +66,11 @@ function App() {
             path="/dashboard/home"
             element={
               <ProtectedRoute>
-                <DashboardHome />
+                <Suspense
+                  fallback={<PageSkeleton loadingText="Loading Home..." />}
+                >
+                  <DashboardHome />
+                </Suspense>
               </ProtectedRoute>
             }
           />
@@ -78,7 +78,11 @@ function App() {
             path="/dashboard/profile"
             element={
               <ProtectedRoute>
-                <DashboardProfile />
+                <Suspense
+                  fallback={<PageSkeleton loadingText="Loading Profile..." />}
+                >
+                  <DashboardProfile />
+                </Suspense>
               </ProtectedRoute>
             }
           />
@@ -86,7 +90,13 @@ function App() {
             path="/dashboard/transferfunds"
             element={
               <ProtectedRoute>
-                <DashboardTransferFunds />
+                <Suspense
+                  fallback={
+                    <PageSkeleton loadingText="Loading Transfer funds..." />
+                  }
+                >
+                  <DashboardTransferFunds />
+                </Suspense>
               </ProtectedRoute>
             }
           />
@@ -94,7 +104,11 @@ function App() {
             path="/dashboard/settings"
             element={
               <ProtectedRoute>
-                <DashboardSettings />
+                <Suspense
+                  fallback={<PageSkeleton loadingText="Loading Settings..." />}
+                >
+                  <DashboardSettings />
+                </Suspense>
               </ProtectedRoute>
             }
           />

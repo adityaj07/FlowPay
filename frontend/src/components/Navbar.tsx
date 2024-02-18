@@ -21,18 +21,19 @@ const menuLinks: {
   href: string;
 }[] = [
   {
-    trigger: "Get Started",
-    link: "Create your DevCard",
-    text: "Get your Developer card now.",
-    href: "/createCard",
+    trigger: "Dashboard",
+    link: "Login to access Your FlowPay Dashboard",
+    text: "Manage your transactions and finances with ease.",
+    href: "/login",
   },
   {
-    trigger: "DevCard Wall",
-    link: "Go to DevCard Wall",
-    text: "Look at the cards of devs.",
-    href: "/cardWall",
+    trigger: "Payments",
+    link: "Signup and make Payments with FlowPay",
+    text: "Effortlessly send and receive payments securely.",
+    href: "/signup",
   },
 ];
+
 
 const Navbar: FC<NavbarProps> = ({}) => {
   const [isNavOpen, setIsNavOpen] = useState(false);
@@ -46,7 +47,7 @@ const Navbar: FC<NavbarProps> = ({}) => {
       <nav className="flex justify-between items-center border-b border-zinc-600/40 w-[90%] mx-auto h-[4rem] mt-3">
         <div className="flex items-center">
           <Link to="/" className="flex gap-2 justify-center items-center">
-            <img src="/assets/logo.png" alt="logo" className="w-[88px]" />
+            <img src="/assets/logo.png" alt="logo" className="w-[88px] -ml-6" />
             <span className="mr-4 -ml-4 font-bold text-[clamp(1.95rem, 1.56vw + 1.56rem, 2.81rem)]">
               FlowPay
             </span>
