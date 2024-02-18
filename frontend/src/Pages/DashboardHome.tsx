@@ -4,7 +4,7 @@ import DashboardHeader from "./DashboardHeader";
 import { Separator } from "@/components/ui/separator";
 import axiosInstance from "@/api/axiosInstance";
 import { useToast } from "@/components/ui/use-toast";
-import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 
 interface DashboardHomeProps {}
 
@@ -29,15 +29,17 @@ const DashboardHome: FC<DashboardHomeProps> = ({}) => {
   }, []);
 
   const { toast } = useToast();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const handleLogout = async () => {
     const res = await axiosInstance.post("/user/logout");
 
     if (res.status === 200) {
+      const {logout} = useAuth()
       toast({
         description: "Logged out successfully",
       });
-      navigate("/");
+      // navigate("/");
+      logout();
     } else {
       toast({
         description: "Error logging out",

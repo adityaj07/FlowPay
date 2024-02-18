@@ -8,9 +8,15 @@ import { connectDB } from "../db/db";
 import { statusCode } from "../types/types";
 import { signupBody, loginBody, updateBody } from "../types/authTypes";
 import Account from "../models/Account";
-config();
 
 connectDB();
+
+interface UserDTO {
+  _id: string;
+  username: string;
+  firstName: string;
+  lastName: string;
+}
 
 export const signup = async (req: Request, res: Response) => {
   try {
@@ -116,6 +122,16 @@ export const login = async (req: Request, res: Response) => {
         }
       );
 
+      const userId = user._id.toString();
+      // If password is valid, create user DTO(Data Transfer Object) without password
+      const userDTO: UserDTO = {
+        _id: userId,
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
+      };
+      console.log(user);
+
       res.cookie("Bearer", token, {
         httpOnly: true,
         secure: true,
@@ -124,6 +140,7 @@ export const login = async (req: Request, res: Response) => {
 
       return res.json({
         token: token,
+        userDTO,
         message: "Login successful",
       });
     }
@@ -192,7 +209,7 @@ export const updateUser = async (req: Request, res: Response) => {
 
     res.status(statusCode.success).json({
       message: "Updated Successfully",
-      user: updatedUser
+      user: updatedUser,
     });
   } catch (error) {
     console.error("Error updating the user:", error);

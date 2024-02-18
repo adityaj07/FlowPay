@@ -13,8 +13,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import axiosInstance from "@/api/axiosInstance";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ArrowLeft, Loader2 } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
 const formSchema = z.object({
   username: z.string().email("Invalid email address"),
@@ -23,7 +24,6 @@ const formSchema = z.object({
 
 const Login = () => {
   const { toast } = useToast();
-  const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -32,6 +32,7 @@ const Login = () => {
       password: "",
     },
   });
+  const { login } = useAuth();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
@@ -43,15 +44,14 @@ const Login = () => {
 
       const response = await axiosInstance.post("/user/login", requestData);
 
-      if (response.status === 200) {
-        // toast.success("Signup successful",{
-        //   position:'top-center'
-        // })
+      console.log(response.data.userDTO);
 
+      if (response.status === 200) {
+        const user = response.data.userDTO;
         toast({
           description: "Logged in successfully",
         });
-        navigate("/dashboard/home");
+        await login(user);
       } else {
         toast({
           description: "Error logging in",

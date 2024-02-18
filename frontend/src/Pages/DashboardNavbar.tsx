@@ -4,7 +4,8 @@ import { useToast } from "@/components/ui/use-toast";
 import { Separator } from "@/components/ui/separator";
 import { Home, LogOut, Send, Settings, User } from "lucide-react";
 import { FC } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 
 interface DashboardNavbarProps {}
 
@@ -39,15 +40,17 @@ const dashboardNavLinks: NavLink[] = [
 
 const DashboardNavbar: FC<DashboardNavbarProps> = ({}) => {
   const { toast } = useToast();
-  const navigate = useNavigate();
+
   const handleLogout = async () => {
     const res = await axiosInstance.post("/user/logout");
-
+    
     if (res.status === 200) {
+      const {logout} = useAuth();
       toast({
         description: "Logged out successfully",
       });
-      navigate("/");
+      // navigate("/");
+      logout()
     } else {
       toast({
         description: "Error logging out",

@@ -4,6 +4,8 @@ import "./App.css";
 import PageSkeleton from "./components/ui/skeletons/pageSkeleton";
 import Navbar from "./components/Navbar";
 import DashboardTransferFunds from "./Pages/DashboardTransferFunds";
+import { AuthProvider } from "./hooks/useAuth";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const Home = lazy(() => import("./Pages/Home"));
 const Signup = lazy(() => import("./Pages/Signup"));
@@ -19,7 +21,7 @@ function App() {
   const isLandingPage = location.pathname === "/";
 
   return (
-    <>
+    <AuthProvider>
       {isLandingPage && <Navbar />}
       <Routes>
         <Route
@@ -55,24 +57,50 @@ function App() {
         <Route
           path="/dashboard"
           element={
-            <Suspense
-              fallback={<PageSkeleton loadingText="Loading Dashboard..." />}
-            >
-              <DashboardLayout />
-            </Suspense>
+            <ProtectedRoute>
+              <Suspense
+                fallback={<PageSkeleton loadingText="Loading Dashboard..." />}
+              >
+                <DashboardLayout />
+              </Suspense>
+            </ProtectedRoute>
           }
         >
-          <Route path="/dashboard/home" element={<DashboardHome />} />
-          <Route path="/dashboard/profile" element={<DashboardProfile />} />
+          <Route
+            path="/dashboard/home"
+            element={
+              <ProtectedRoute>
+                <DashboardHome />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/profile"
+            element={
+              <ProtectedRoute>
+                <DashboardProfile />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/dashboard/transferfunds"
-            element={<DashboardTransferFunds />}
+            element={
+              <ProtectedRoute>
+                <DashboardTransferFunds />
+              </ProtectedRoute>
+            }
           />
-          <Route path="/dashboard/settings" element={<DashboardSettings />} />
+          <Route
+            path="/dashboard/settings"
+            element={
+              <ProtectedRoute>
+                <DashboardSettings />
+              </ProtectedRoute>
+            }
+          />
         </Route>
-       
       </Routes>
-    </>
+    </AuthProvider>
   );
 }
 
