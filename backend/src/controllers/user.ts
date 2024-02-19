@@ -123,14 +123,14 @@ export const login = async (req: Request, res: Response) => {
       );
 
       const userId = user._id.toString();
-      // If password is valid, create user DTO(Data Transfer Object) without password
+      // If password is valid, create user DTO(Data Transfer Object) without password to send it to the frontend
       const userDTO: UserDTO = {
         _id: userId,
         username: user.username,
         firstName: user.firstName,
         lastName: user.lastName,
       };
-      console.log(user);
+      // console.log(user);
 
       res.cookie("Bearer", token, {
         httpOnly: true,
@@ -288,6 +288,14 @@ export const deleteUser = async (req: Request, res: Response) => {
     if (!user) {
       return res.status(statusCode.notFound).json({
         message: "User not found",
+      });
+    }
+
+    // console.log(user.username)
+
+    if(user.username === "user@gmail.com") {
+      return res.status(statusCode.notAccepted).json({
+        message: "You are not allowed to delete a test account.",
       });
     }
 

@@ -16,18 +16,25 @@ const DashboardSettings: FC<DashboardSettingsProps> = ({}) => {
   const navigate = useNavigate();
 
   const handleDelete = async () => {
-    const res = await axiosInstance.delete("/user/deleteuser");
+    try {
+      const res = await axiosInstance.delete("/user/deleteuser");
 
-    if (res.status === 200) {
+      if (res.status === 200) {
+        toast({
+          description: res.data.message,
+        });
+        navigate("/");
+      } else {
+        toast({
+          description: "Error deleting the user",
+        });
+      }
+    } catch (error: any) {
       toast({
-        description: res.data.message,
-      });
-      navigate("/");
-    } else {
-      toast({
-        description: "Error deleting the user",
+        description: error.response.data.message,
       });
     }
+   
   };
 
   const confirmButtons: JSX.Element[] = [

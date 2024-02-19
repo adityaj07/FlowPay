@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
 import {
   Form,
   FormControl,
@@ -75,7 +76,11 @@ const Login = () => {
             </Link>
           </div>
 
-          <div className="flex flex-col justify-center items-center w-full h-full">
+          <motion.div className="flex flex-col justify-center items-center w-full h-full"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          >
             <h1 className="text-4xl font-bold mb-4">Welcome back!</h1>
             <small className="mb-6">Enter your details to login to Flow.</small>
             <div className=" mx-auto md:w-[50%] w-[85%]">
@@ -134,6 +139,11 @@ const Login = () => {
                   Signup here
                 </Link>
               </p>
+              <div className="flex flex-col gap-1 p-2 rounded-md  border dark:border-slate-50/30 mt-6">
+                <span className="font-semibold">Wanna just try out FlowPay? Use the following credentials</span>
+                <span>user@gmail.com</span>
+                <span>123456</span>
+              </div>
               <Link to="/">
                 <p className="mt-12 md:mt-24 text-sm flex items-center gap-4 cursor-pointer hover:underline">
                   <ArrowLeft />
@@ -141,7 +151,7 @@ const Login = () => {
                 </p>
               </Link>
             </div>
-          </div>
+          </motion.div>
         </div>
         <div className="bg-black text-white dark:bg-slate-200 lg:flex justify-center items-center rounded-l-3xl h-screen hidden dark:text-background flex-col">
           <img
