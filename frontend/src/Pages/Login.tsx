@@ -12,11 +12,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "../components/ui/checkbox";
 import { useToast } from "@/components/ui/use-toast";
 import axiosInstance from "@/api/axiosInstance";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { useState } from "react";
 
 const formSchema = z.object({
   username: z.string().email("Invalid email address"),
@@ -25,6 +27,12 @@ const formSchema = z.object({
 
 const Login = () => {
   const { toast } = useToast();
+  const { login } = useAuth();
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleShowPassword = () => {
+    setShowPassword((prev) => !prev);
+  };
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -33,7 +41,6 @@ const Login = () => {
       password: "",
     },
   });
-  const { login } = useAuth();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
@@ -44,7 +51,6 @@ const Login = () => {
       };
 
       const response = await axiosInstance.post("/user/login", requestData);
-
 
       if (response.status === 200) {
         const user = response.data.userDTO;
@@ -76,10 +82,11 @@ const Login = () => {
             </Link>
           </div>
 
-          <motion.div className="flex flex-col justify-center items-center w-full h-full"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
+          <motion.div
+            className="flex flex-col justify-center items-center w-full h-full"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
           >
             <h1 className="text-4xl font-bold mb-4">Welcome back!</h1>
             <small className="mb-6">Enter your details to login to Flow.</small>
@@ -112,11 +119,22 @@ const Login = () => {
                         <FormControl>
                           <Input
                             placeholder="Enter your password"
-                            type="password"
+                            type={showPassword ? "text" : "password"}
                             {...field}
                           />
                         </FormControl>
-
+                        <div className="flex items-center space-x-2 pt-2">
+                          <Checkbox
+                            id="showpassword"
+                            onClick={handleShowPassword}
+                          />
+                          <label
+                            htmlFor="showpassword"
+                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 "
+                          >
+                            Show Password
+                          </label>
+                        </div>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -140,7 +158,9 @@ const Login = () => {
                 </Link>
               </p>
               <div className="flex flex-col gap-1 p-2 rounded-md  border dark:border-slate-50/30 mt-6">
-                <span className="font-semibold">Wanna just try out FlowPay? Use the following credentials</span>
+                <span className="font-semibold">
+                  Wanna just try out FlowPay? Use the following credentials
+                </span>
                 <span>user@gmail.com</span>
                 <span>123456</span>
               </div>

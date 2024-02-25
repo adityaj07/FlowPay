@@ -16,6 +16,8 @@ import { useToast } from "@/components/ui/use-toast";
 import axiosInstance from "@/api/axiosInstance";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Loader2 } from "lucide-react";
+import { useState } from "react";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const formSchema = z.object({
   username: z.string().email("Invalid email address"),
@@ -27,6 +29,11 @@ const formSchema = z.object({
 const Signup = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleShowPassword = () => {
+    setShowPassword((prev) => !prev);
+  };
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -150,11 +157,22 @@ const Signup = () => {
                         <FormControl>
                           <Input
                             placeholder="Enter your password"
-                            type="password"
+                            type={showPassword ? "text" : "password"}
                             {...field}
                           />
                         </FormControl>
-
+                        <div className="flex items-center space-x-2 pt-2">
+                          <Checkbox
+                            id="showpassword"
+                            onClick={handleShowPassword}
+                          />
+                          <label
+                            htmlFor="showpassword"
+                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 "
+                          >
+                            Show Password
+                          </label>
+                        </div>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -179,7 +197,9 @@ const Signup = () => {
                 </Link>
               </p>
               <div className="flex flex-col gap-1 p-2 rounded-md  border dark:border-slate-50/30  mt-6">
-                <span className="font-semibold">Wanna just try out FlowPay? </span>
+                <span className="font-semibold">
+                  Wanna just try out FlowPay?{" "}
+                </span>
                 <Link to="/login" className="hover:underline">
                   Go to Login
                 </Link>
