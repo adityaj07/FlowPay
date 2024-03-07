@@ -1,6 +1,6 @@
 <h1 align="center"> Flowpay</h1>
 <p align="center">
-  <img src="frontend/src/public/assets/logo.png" alt="Flowpay Logo">
+  <img src="./frontend/public//assets/project-flowpay.jpg" alt="Flowpay">
 </p>
 
 ####  A Paytm-inspired payment platform facilitating user sign-up, seamless peer-to-peer transactions, and efficient user search functionalities for easy money transfers.
