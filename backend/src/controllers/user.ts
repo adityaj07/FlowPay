@@ -130,7 +130,6 @@ export const login = async (req: Request, res: Response) => {
         firstName: user.firstName,
         lastName: user.lastName,
       };
-      // console.log(user);
 
       res.cookie("Bearer", token, {
         httpOnly: true,
@@ -193,14 +192,36 @@ export const updateUser = async (req: Request, res: Response) => {
       });
     }
 
-    // Update user information
+    // hash the password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    // Check if it's a test user
+    const testUser = await User.findOne({
+      _id: req.userId,
+    });
+
+    if (testUser?.username === "user@gmail.com") {
+      // If it's a test user, update only the firstName and lastName
+      const updatedUser = await User.findOneAndUpdate(
+        { _id: req.userId }, // Query to find the user by userId
+        { firstName, lastName }, // Updated fields
+        { new: true } // Return the modified document
+      );
+
+      return res.status(statusCode.notAccepted).json({
+        message: "The password cannot be updated on a test account!",
+        user: updatedUser,
+      });
+    }
+
+    // If not test user, Update the user info, including the hashed password
     const updatedUser = await User.findOneAndUpdate(
       { _id: req.userId }, // Query to find the user by userId
-      { firstName, lastName, password }, // Updated fields
+      { firstName, lastName, password: hashedPassword }, // Updated fields, including the hashed password
       { new: true } // Return the modified document
     );
 
-    // Check if user was found and updated
     if (!updatedUser) {
       return res.status(statusCode.notFound).json({
         message: "User not found",
@@ -291,9 +312,7 @@ export const deleteUser = async (req: Request, res: Response) => {
       });
     }
 
-    // console.log(user.username)
-
-    if(user.username === "user@gmail.com") {
+    if (user.username === "user@gmail.com") {
       return res.status(statusCode.notAccepted).json({
         message: "You are not allowed to delete a test account.",
       });

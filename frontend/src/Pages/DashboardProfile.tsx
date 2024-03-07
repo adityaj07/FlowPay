@@ -44,6 +44,7 @@ const formSchema = z.object({
 
 const DashboardProfile: FC<DashboardProfileProps> = ({}) => {
   const [user, setUser] = useState<User | null>(null);
+  const [updatedUser, setUpdatedUser] = useState<Boolean>(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -54,7 +55,7 @@ const DashboardProfile: FC<DashboardProfileProps> = ({}) => {
     };
 
     getUser();
-  }, []);
+  }, [updatedUser]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -73,12 +74,9 @@ const DashboardProfile: FC<DashboardProfileProps> = ({}) => {
         lastName: lastName.trim(),
         password: password.trim(),
       };
-      const response = await axiosInstance.put(
-        "/user/updateuser",
-        requestData
-      );
+      const response = await axiosInstance.put("/user/updateuser", requestData);
 
-      const updatedUser = response.data.updatedUser
+      const updatedUser = response.data.updatedUser;
 
       if (response.status === 200) {
         console.log(response.data.message);
@@ -87,6 +85,7 @@ const DashboardProfile: FC<DashboardProfileProps> = ({}) => {
         });
 
         setUser(updatedUser);
+        setUpdatedUser(true);
         form.reset();
       } else {
         toast({
